@@ -1,0 +1,18 @@
+# Use LF for all text files by default
+* text=auto eol=lf
+
+# Use CRLF for Windows batch scripts
+*.cmd text eol=crlf
+*.bat text eol=crlf
+
+# Explicitly set shell scripts to LF (used by Unix/Mac)
+*.sh text eol=lf
+
+# Ensure JSON, YAML, XML, etc., also use LF
+*.json text eol=lf
+*.yml text eol=lf
+*.yaml text eol=lf
+*.xml text eol=lf
+
+# Ensure Java files use LF
+*.java text eol=lf
