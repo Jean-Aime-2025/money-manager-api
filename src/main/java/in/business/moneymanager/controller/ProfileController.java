@@ -6,6 +6,7 @@ import in.business.moneymanager.service.ProfileService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
@@ -37,17 +38,19 @@ public class ProfileController {
         try {
             if(!profileService.isAccountActive(authDTO.getEmail())){
                 return ResponseEntity.status(HttpStatus.FORBIDDEN).body(
-                        Map.of(
-                                "message","Please activate your account first!"
-                        )
+                        Map.of("message", "Please activate your account first!")
                 );
             }
             Map<String,Object> response = profileService.authenticateAndGenerateToken(authDTO);
             return ResponseEntity.ok(response);
-        }catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(Map.of(
-                    "message", e.getMessage()
-            ));
+        } catch (BadCredentialsException ex) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(
+                    Map.of("message", "Invalid email or password")
+            );
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(
+                    Map.of("message", "An error occurred: " + e.getMessage())
+            );
         }
     }
 
