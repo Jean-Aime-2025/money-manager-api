@@ -3,30 +3,43 @@ package in.business.moneymanager.service;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.mail.SimpleMailMessage;
-import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
+import java.util.*;
 
 @Service
 @RequiredArgsConstructor
 @Slf4j
 public class EmailService {
 
-    private final JavaMailSender mailSender;
+    private final RestTemplate brevoRestTemplate;
 
-    @Value("${spring.mail.properties.mail.smtp.from}")
-    private String fromEmail;
+    @Value("${brevo.sender.email}")
+    private String senderEmail;
 
-    public void sendEmail(String to, String subject, String body) {
-        try{
-            SimpleMailMessage message = new SimpleMailMessage();
-            message.setFrom(fromEmail);
-            message.setTo(to);
-            message.setSubject(subject);
-            message.setText(body);
-            mailSender.send(message);
-        }catch (Exception e){
-            throw new RuntimeException(e.getMessage());
+    @Value("${brevo.sender.name}")
+    private String senderName;
+
+    public void sendEmail(String toEmail, String subject, String htmlContent) {
+
+        Map<String, Object> body = new HashMap<>();
+
+        body.put("sender", Map.of(
+                "email", senderEmail,
+                "name", senderName
+        ));
+
+        body.put("to", List.of(Map.of("email", toEmail)));
+        body.put("subject", subject);
+        body.put("htmlContent", htmlContent);
+
+        try {
+            brevoRestTemplate.postForEntity("/smtp/email", body, String.class);
+            log.info("Email sent to {}", toEmail);
+
+        } catch (Exception e) {
+            log.error("Brevo email failed: {}", e.getMessage(), e);
+            throw new RuntimeException("Email failed", e);
         }
     }
 }
