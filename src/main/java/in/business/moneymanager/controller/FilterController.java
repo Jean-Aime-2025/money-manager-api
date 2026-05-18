@@ -29,7 +29,7 @@ public class FilterController {
         LocalDate startDate = filter.getStartDate() != null ? filter.getStartDate() : LocalDate.MIN;
         LocalDate endDate = filter.getEndDate() != null ? filter.getEndDate() : LocalDate.now();
         String keyword = filter.getKeyword() !=null ? filter.getKeyword() : "";
-        String sortField = filter.getSortField() != null ? filter.getSortOrder() : "date";
+        String sortField = filter.getSortField() != null ? filter.getSortField() : "date";
         Sort.Direction direction = "desc".equalsIgnoreCase(filter.getSortOrder()) ? Sort.Direction.DESC : Sort.Direction.ASC;
         Sort sort = Sort.by(direction,sortField);
 
