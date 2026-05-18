@@ -56,7 +56,7 @@ public class ExcelService {
                         row.createCell(1).setCellValue(expense.getName() != null ? expense.getName() : "N/A");
                         row.createCell(2).setCellValue(expense.getCategoryId() != null ? expense.getCategoryName() : "N/A");
                         row.createCell(3).setCellValue(expense.getAmount() != null ? expense.getAmount().doubleValue() : 0);
-                        row.createCell(4).setCellValue(expense.getDate() != null ? expense.getDate().toString() : "N/A");
+                        row.createCell(4).setCellValue(expense.getDate() != null ? expense.getDate().   toString() : "N/A");
                     });
             workbook.write(os);
         }

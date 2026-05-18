@@ -13,7 +13,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 
 @RestController
-@RequestMapping
+@RequestMapping("/email")
 @RequiredArgsConstructor
 public class EmailController {
 
