@@ -29,7 +29,7 @@ public class FilterController {
 
         LocalDate startDate = filter.getStartDate() != null
                 ? filter.getStartDate()
-                : LocalDate.MIN;
+                : LocalDate.of(2000, 1, 1);
 
         LocalDate endDate = filter.getEndDate() != null
                 ? filter.getEndDate()
